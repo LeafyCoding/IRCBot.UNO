@@ -7,7 +7,9 @@
 // -----------------------------------------------------------
 
 using System;
+using System.Diagnostics;
 using System.IO;
+using Leafy_IRCBot.UNO.Handlers;
 using Nini.Config;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -48,6 +50,7 @@ namespace Leafy_IRCBot.UNO.Classes
                     Tools.ColoredWrite(ConsoleColor.Red,
                         "A new config file has been created, please edit it and re-run the program.");
                     Console.ReadKey();
+                    Process.Start("config.ini");
                 }
                 return false;
             }
@@ -106,6 +109,16 @@ namespace Leafy_IRCBot.UNO.Classes
                 Tools.ColoredWrite(ConsoleColor.DarkRed, $"{ex.GetType().Name}: {ex.Message}");
                 Tools.ColoredWrite(ConsoleColor.Red, "An error was encountered while parsing the config file.");
                 Console.ReadKey();
+                Environment.Exit(1);
+            }
+
+            if (MySQL.TestMySQL())
+            {
+                Tools.SemiColoredWrite(ConsoleColor.Cyan, "[MySQL:Test] ", "Success");
+                MySQL.InitUsers();
+            }
+            else
+            {
                 Environment.Exit(1);
             }
         }
