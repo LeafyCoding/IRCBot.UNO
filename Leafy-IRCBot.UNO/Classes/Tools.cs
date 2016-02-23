@@ -38,16 +38,21 @@ namespace Leafy_IRCBot.UNO.Classes
         {
             Program.client.ConnectionComplete += (s, e) =>
             {
-                SemiColoredWrite(ConsoleColor.Yellow, "[IRC] ", "Identifying to NickServ.");
-                Program.client.SendMessage("identify " + Config.IRC_NSPassword, "NickServ");
-                Thread.Sleep(200);
-                SemiColoredWrite(ConsoleColor.Yellow, "[IRC] ", "Enabling vHost.");
-                Program.client.SendMessage("hs on", "HostServ");
-                Thread.Sleep(200);
+                if (!string.IsNullOrEmpty(Config.IRC_NSPassword))
+                {
+                    SemiColoredWrite(ConsoleColor.Yellow, "[IRC] ", "Identifying to NickServ.");
+                    Program.client.SendMessage("identify " + Config.IRC_NSPassword, "NickServ");
+                    Thread.Sleep(200);
+                    SemiColoredWrite(ConsoleColor.Yellow, "[IRC] ", "Enabling vHost.");
+                    Program.client.SendMessage("hs on", "HostServ");
+                    Thread.Sleep(200);
+                }
+
                 SemiColoredWrite(ConsoleColor.Yellow, "[IRC] ", "Joining default channel.");
                 Program.client.JoinChannel(Config.IRC_ChannelName);
                 SemiColoredWrite(ConsoleColor.Yellow, "[IRC] ", "Joined channel, enabling menu.");
                 Thread.Sleep(100);
+
                 Program.MenuEnabled = true;
             };
 
@@ -66,7 +71,7 @@ namespace Leafy_IRCBot.UNO.Classes
                 }
                 if (e.PrivateMessage.Message.Equals("\x01TIME\x01"))
                 {
-                    var msg = $"\x01TIME  {BuildCTCPTime()} \x01";
+                    var msg = $"\x01TIME {BuildCTCPTime()} \x01";
                     Program.client.SendNotice(msg, e.PrivateMessage.User.Nick);
                     SemiColoredWrite(ConsoleColor.Magenta, "[CTCP:TIME] ", $"Responded to request from {e.PrivateMessage.User.Nick}");
                 }
