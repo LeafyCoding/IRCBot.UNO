@@ -3,14 +3,18 @@
 // To sell or change credits of this software is forbidden,
 // except if someone approves it from the LeafyCoding INC. team.
 // -----------------------------------------------------------
-// Copyrights (c) 2016 Leafy-IRCBot.Quotes INC. All rights reserved.
+// Copyrights (c) 2016 Leafy-IRCBot.UNO INC. All rights reserved.
 // -----------------------------------------------------------
+
+#region
 
 using System;
 using System.Diagnostics;
 using System.IO;
 using Leafy_IRCBot.UNO.Handlers;
 using Nini.Config;
+
+#endregion
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable NotAccessedField.Global
@@ -26,6 +30,7 @@ namespace Leafy_IRCBot.UNO.Classes
         public static string IRC_Server = string.Empty;
         public static string IRC_Password = string.Empty;
         public static string IRC_NSPassword = string.Empty;
+        public static string IRC_CMDChar = string.Empty;
         public static bool IRC_SSL;
 
         public static string DB_User = string.Empty;
@@ -61,27 +66,29 @@ namespace Leafy_IRCBot.UNO.Classes
             try
             {
                 var NewConfig = ";config.ini" + Environment.NewLine +
-                    "[DB_Options]" + Environment.NewLine +
-                    "User = " + Environment.NewLine +
-                    "Address = " + Environment.NewLine +
-                    "Password = " + Environment.NewLine +
-                    "Database = " + Environment.NewLine +
-                    "Port = " + Environment.NewLine +
-                    "SSL =  " + Environment.NewLine +
-                    "[IRC_Options]" + Environment.NewLine +
-                    "BotName = " + Environment.NewLine +
-                    "ChannelName = " + Environment.NewLine +
-                    "Server = " + Environment.NewLine +
-                    "Password = " + Environment.NewLine +
-                    "NickServPassword = ";
+                                "[DB_Options]" + Environment.NewLine +
+                                "User = " + Environment.NewLine +
+                                "Address = " + Environment.NewLine +
+                                "Password = " + Environment.NewLine +
+                                "Database = " + Environment.NewLine +
+                                "Port = " + Environment.NewLine +
+                                "SSL =  " + Environment.NewLine +
+                                "[IRC_Options]" + Environment.NewLine +
+                                "BotName = " + Environment.NewLine +
+                                "ChannelName = " + Environment.NewLine +
+                                "Server = " + Environment.NewLine +
+                                "Password = " + Environment.NewLine +
+                                "NickServPassword = " + Environment.NewLine +
+                                "CMDChar = ";
 
                 File.WriteAllText(@"config.ini", NewConfig);
                 return true;
             }
             catch (Exception ex)
             {
-                Tools.ColoredWrite(ConsoleColor.DarkRed, $"{ex.GetType().Name}: {ex.Message}");
-                Tools.ColoredWrite(ConsoleColor.Red, "A config file could not be written, check current directory permissions.");
+                Tools.ColoredWrite(ConsoleColor.Red, $"{ex.GetType().Name}: {ex.Message}");
+                Tools.ColoredWrite(ConsoleColor.Red,
+                    "A config file could not be written, check current directory permissions.");
                 Console.ReadKey();
                 return false;
             }
@@ -96,6 +103,7 @@ namespace Leafy_IRCBot.UNO.Classes
                 IRC_Server = ConfigFile.Configs["IRC_Options"].Get("Server");
                 IRC_Password = ConfigFile.Configs["IRC_Options"].Get("Password");
                 IRC_NSPassword = ConfigFile.Configs["IRC_Options"].Get("NSPassword");
+                IRC_CMDChar = ConfigFile.Configs["IRC_Options"].Get("CMDChar");
                 IRC_SSL = ConfigFile.Configs["IRC_Options"].GetBoolean("SSL");
 
                 DB_User = ConfigFile.Configs["DB_Options"].Get("User");
@@ -106,7 +114,7 @@ namespace Leafy_IRCBot.UNO.Classes
             }
             catch (Exception ex)
             {
-                Tools.ColoredWrite(ConsoleColor.DarkRed, $"{ex.GetType().Name}: {ex.Message}");
+                Tools.ColoredWrite(ConsoleColor.Red, $"{ex.GetType().Name}: {ex.Message}");
                 Tools.ColoredWrite(ConsoleColor.Red, "An error was encountered while parsing the config file.");
                 Console.ReadKey();
                 Environment.Exit(1);

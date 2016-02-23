@@ -10,6 +10,10 @@
 
 using System;
 using System.Threading;
+using System.Threading.Tasks;
+using ChatSharp.Events;
+using Leafy_IRCBot.UNO.Classes.UNOGame;
+using Leafy_IRCBot.UNO.Handlers;
 
 #endregion
 
@@ -58,7 +62,7 @@ namespace Leafy_IRCBot.UNO.Classes
 
             Program.client.ChannelMessageRecieved += (s, e) =>
             {
-                // Ignored
+                new Task(() => { HandleMSG(e); }).Start();
             };
 
             Program.client.PrivateMessageRecieved += (s, e) =>
@@ -76,6 +80,23 @@ namespace Leafy_IRCBot.UNO.Classes
                     SemiColoredWrite(ConsoleColor.Magenta, "[CTCP:TIME] ", $"Responded to request from {e.PrivateMessage.User.Nick}");
                 }
             };
+        }
+
+        private static void HandleMSG(PrivateMessageEventArgs msg)
+        {
+            if (msg.PrivateMessage.Message.Equals($"{Config.IRC_CMDChar}uno"))
+            {
+                Game.StartGame(msg.PrivateMessage.User.Nick, msg.PrivateMessage.Source);
+            }
+
+            if (msg.PrivateMessage.User.Nick == "lonely") // TODO remove this.
+            {
+                if (msg.PrivateMessage.Message.Equals($"{Config.IRC_CMDChar}testdeal"))
+                {
+                    GetCard.InitDeck();
+                    Program.client.SendMessage(GetCard.DrawCards(7), msg.PrivateMessage.Source);
+                }
+            }
         }
 
         private static string BuildCTCPTime()

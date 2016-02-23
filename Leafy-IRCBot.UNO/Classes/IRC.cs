@@ -13,11 +13,11 @@ namespace Leafy_IRCBot.UNO.Classes
 #pragma warning disable 169
         // ReSharper disable UnusedMember.Global
 
-        public static char NORMAL = (char) 15;
-        public static char BOLD = (char) 2;
-        public static char UNDERLINE = (char) 31;
-        public static char REVERSE = (char) 22;
-        public static char ITALIC = (char) 29;
+        public const char NORMAL = (char) 15;
+        public const char BOLD = (char) 2;
+        public const char UNDERLINE = (char) 31;
+        public const char REVERSE = (char) 22;
+        public const char ITALIC = (char) 29;
         public static readonly string NOCOLOR = ((char) 3).ToString();
         public static readonly string WHITE = (char) 3 + "00";
         public static readonly string BLACK = (char) 3 + "01";

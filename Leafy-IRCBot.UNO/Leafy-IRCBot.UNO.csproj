@@ -56,8 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\UNOGame\Cards.cs" />
     <Compile Include="Classes\Config.cs" />
+    <Compile Include="Classes\UNOGame\Playability.cs" />
     <Compile Include="Classes\IRC.cs" />
+    <Compile Include="Classes\Messages.cs" />
+    <Compile Include="Handlers\Game.cs" />
     <Compile Include="Handlers\MySQL.cs" />
     <Compile Include="Classes\Tools.cs" />
     <Compile Include="Handlers\User.cs" />
