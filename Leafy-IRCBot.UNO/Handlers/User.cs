@@ -16,7 +16,7 @@ using Leafy_IRCBot.UNO.Classes;
 
 namespace Leafy_IRCBot.UNO.Handlers
 {
-    internal class User
+    internal static class User
     {
         public static readonly List<string> Users = new List<string>();
 
