@@ -72,7 +72,13 @@ namespace Leafy_IRCBot.UNO.Handlers
                     case 1045:
                         Tools.ColoredWrite(ConsoleColor.Red, "[MySQL:Err] Invalid username/password, please try again");
                         break;
+
+                    default:
+                        Tools.ColoredWrite(ConsoleColor.Red, ex.Message);
+                        break;
                 }
+
+                Console.ReadKey();
                 return false;
             }
         }
@@ -95,7 +101,9 @@ namespace Leafy_IRCBot.UNO.Handlers
             {
                 try
                 {
-                    var MySQL_Command = new MySqlCommand("SELECT `name` FROM `users`", DB_Connection);
+                    const string cmd = "SELECT `name` FROM `users`;";
+                    Tools.SemiColoredWrite(ConsoleColor.Magenta, "[MySQL] ", cmd);
+                    var MySQL_Command = new MySqlCommand(cmd, DB_Connection);
                     var dataReader = MySQL_Command.ExecuteReader();
                     while (dataReader.Read())
                     {
@@ -103,8 +111,8 @@ namespace Leafy_IRCBot.UNO.Handlers
                     }
                     dataReader.Close();
 
-                    var _s = User.Users.Count > 1 ? "s" : string.Empty;
-                    Tools.SemiColoredWrite(ConsoleColor.Cyan, "[MySQL:InitUsers] ",
+                    var _s = User.Users.Count > 1 || User.Users.Count == 0 ? "s" : string.Empty;
+                    Tools.SemiColoredWrite(ConsoleColor.Magenta, "[MySQL:InitUsers] ",
                         $"Loaded {User.Users.Count} user{_s}.");
 
                     CloseConnection();
