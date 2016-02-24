@@ -82,19 +82,28 @@ namespace Leafy_IRCBot.UNO.Classes
             };
         }
 
-        private static void HandleMSG(PrivateMessageEventArgs msg)
+        private static void HandleMSG(PrivateMessageEventArgs e)
         {
-            if (msg.PrivateMessage.Message.Equals($"{Config.IRC_CMDChar}uno"))
+            var sender = e.PrivateMessage.User.Nick;
+            var message = e.PrivateMessage.Message;
+            var channel = e.PrivateMessage.Source;
+
+            if (message.Equals($"{Config.IRC_CMDChar}uno"))
             {
-                Game.StartGame(msg.PrivateMessage.User.Nick, msg.PrivateMessage.Source);
+                Game.StartGame(sender, channel);
             }
 
-            if (msg.PrivateMessage.User.Nick == "lonely") // TODO remove this.
+            if (message.Equals($"{Config.IRC_CMDChar}ujoin") || message.Equals($"{Config.IRC_CMDChar}uj"))
             {
-                if (msg.PrivateMessage.Message.Equals($"{Config.IRC_CMDChar}testdeal"))
+                Game.AddPlayer(sender, channel);
+            }
+
+            if (sender == "lonely") // TODO remove this.
+            {
+                if (message.Equals($"{Config.IRC_CMDChar}testdeal"))
                 {
                     GetCard.InitDeck();
-                    Program.client.SendMessage(GetCard.DrawCards(7), msg.PrivateMessage.Source);
+                    Program.client.SendMessage(GetCard.DrawCards(7), channel);
                 }
             }
         }
