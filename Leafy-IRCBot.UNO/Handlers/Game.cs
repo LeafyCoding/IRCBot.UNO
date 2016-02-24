@@ -38,14 +38,35 @@ namespace Leafy_IRCBot.UNO.Handlers
                 // TODO Get MySQL ready for a game.
                 Tools.SemiColoredWrite(ConsoleColor.Green, "[UNO] ", $"Game started by {sendernick}.");
                 Program.client.SendMessage(Messages.GAME_STARTED(sendernick), channel);
-                AnnounceStart();
+                StartGame();
             }
         }
 
-        private static void AnnounceStart()
+        private static void StartGame()
         {
             isAcceptingPlayers = true;
             PlayerList.Add(isStartedBy);
+        }
+
+        public static void AddPlayer(string sender, string channel)
+        {
+            if (isAcceptingPlayers)
+            {
+                if (!PlayerList.Contains(sender))
+                {
+                    PlayerList.Add(sender);
+                    Program.client.SendMessage(Messages.JOINED(sender, PlayerList.Count), channel);
+                    Tools.SemiColoredWrite(ConsoleColor.Green, "[UNO] ", $"{sender} joined game.");
+                }
+                else
+                {
+                    Program.client.SendMessage(Messages.ALREADY_JOINED(sender), channel);
+                }
+            }
+            else
+            {
+                Program.client.SendMessage(Messages.ALREADY_DEALT(), channel);
+            }
         }
     }
 }
