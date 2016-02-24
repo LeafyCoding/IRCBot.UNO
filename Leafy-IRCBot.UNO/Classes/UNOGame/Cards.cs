@@ -21,6 +21,9 @@ namespace Leafy_IRCBot.UNO.Classes.UNOGame
 {
     internal static class GetCard
     {
+        private static readonly Random rndcard = new Random();
+        private static readonly Random rndcolor = new Random();
+
         private const bool isTopCard = false;
 
         private static readonly List<string> Cards = new List<string>
@@ -155,8 +158,6 @@ namespace Leafy_IRCBot.UNO.Classes.UNOGame
 
         public static string DrawCards(int cardNumber)
         {
-            var rndcard = new Random();
-            var rndcolor = new Random();
             var cardList = new List<string>();
             var cardString = string.Empty;
             var counter = 0;
